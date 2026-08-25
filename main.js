@@ -129,30 +129,56 @@ backToForm.addEventListener("click", function () {
 const siteHeader = document.getElementById("siteHeader");
 
 let lastScrollY = window.scrollY;
+let scrollTicking = false;
 
-window.addEventListener("scroll", () => {
+const SCROLL_THRESHOLD = 8;
+const TOP_OFFSET = 20;
 
+function updateHeaderOnScroll() {
     if (!siteHeader) return;
 
-    const currentScrollY = window.scrollY;
-
-    // Always show header at the very top
-    if (currentScrollY <= 20) {
+    // Keep header visible while mobile menu is open
+    if (document.body.classList.contains("menu-open")) {
         siteHeader.classList.remove("header-hidden");
-        lastScrollY = currentScrollY;
+        scrollTicking = false;
         return;
     }
 
-    // Scrolling DOWN → hide entire header
-    if (currentScrollY > lastScrollY) {
+    const currentScrollY = window.scrollY;
+    const scrollDifference = currentScrollY - lastScrollY;
+
+    // Always show header near the top
+    if (currentScrollY <= TOP_OFFSET) {
+        siteHeader.classList.remove("header-hidden");
+        lastScrollY = currentScrollY;
+        scrollTicking = false;
+        return;
+    }
+
+    // Ignore tiny movements
+    if (Math.abs(scrollDifference) < SCROLL_THRESHOLD) {
+        scrollTicking = false;
+        return;
+    }
+
+    // Scrolling DOWN → hide
+    if (scrollDifference > 0) {
         siteHeader.classList.add("header-hidden");
     }
 
-    // Scrolling UP → show entire header
-    else if (currentScrollY < lastScrollY) {
+    // Scrolling UP → show
+    else {
         siteHeader.classList.remove("header-hidden");
     }
 
     lastScrollY = currentScrollY;
-});
+    scrollTicking = false;
+}
+
+window.addEventListener("scroll", () => {
+    if (!scrollTicking) {
+        window.requestAnimationFrame(updateHeaderOnScroll);
+        scrollTicking = true;
+    }
+}, { passive: true });
 

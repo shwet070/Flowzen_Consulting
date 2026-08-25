@@ -73,7 +73,7 @@ ul{list-style:none;}
   from{opacity:0; transform:translateY(-18px);}
   to{opacity:1; transform:translateY(0);}
 }
-.anim{
+.anim:not(#siteHeader){
   animation:reveal .85s cubic-bezier(.22,1,.36,1) both;
   animation-delay:var(--d,0s);
 }
@@ -100,13 +100,31 @@ ul{list-style:none;}
 /* Header                                                                 */
 /* ---------------------------------------------------------------------- */
 #siteHeader{
-  position:fixed; top:0; left:0; right:0; z-index:20;
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  z-index:20;
   padding:clamp(16px,2.4vh,28px) clamp(14px,3vw,32px);
-  animation:slideDown .7s cubic-bezier(.22,1,.36,1) both;
+
+  transition:
+    transform .45s cubic-bezier(.22,1,.36,1),
+    opacity .3s ease;
+
+  will-change:transform, opacity;
 }
 .head-row{
   max-width:720px; margin:0 auto;
   display:flex; align-items:center; gap:clamp(10px,1.6vw,16px);
+}
+.head-row{
+  max-width:720px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:clamp(10px,1.6vw,16px);
+
+  animation:slideDown .7s cubic-bezier(.22,1,.36,1) both;
 }
 /* ---------------------------------------------------------------------- */
 /* Logos                                                                  */
@@ -115,8 +133,8 @@ ul{list-style:none;}
 /* Header / Hero logo */
 #siteHeader .logo-btn {
   flex-shrink: 0;
-  width: 120px;
-  height: 120px;
+  width: clamp(44px, 5.2vw, 52px);
+  height: clamp(44px, 5.2vw, 52px);
   display: grid;
   place-items: center;
 
@@ -210,7 +228,7 @@ body.menu-open{
 }
 
 .mobile-menu{
-  position:fixed; z-index:30; top:calc(clamp(16px,2.4vh,28px) + 58px); left:50%; transform:translateX(-50%);
+  position:fixed; z-index:30; top:calc(clamp(16px,2.4vh,28px) + 52px); left:50%; transform:translateX(-50%);
   width:min(300px,84vw); background:#fff; border-radius:28px; padding:22px 18px 20px;
   box-shadow:0 20px 60px rgba(0,0,0,.45); display:flex; flex-direction:column; gap:4px;
   animation:menuIn .38s cubic-bezier(.22,1,.36,1) both;
@@ -243,7 +261,7 @@ body.menu-open{
   display:flex; flex-direction:column; align-items:center;
   height:100%; padding:clamp(16px,2.4vh,28px) clamp(14px,3vw,32px);
 }
-.hero-spacer{flex-shrink:0; height:clamp(64px,10vh,96px);}
+.hero-spacer{flex-shrink:0; height:clamp(72px,9vh,88px);}
 .hero{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; max-width:900px; margin:0 auto;}
 
 .trust-row{
@@ -291,7 +309,7 @@ body.menu-open{
   transition:transform .25s ease, box-shadow .25s ease;
 }
 .cta:hover{transform:translateY(-2px) scale(1.02); box-shadow:0 0 0 1px rgba(255,255,255,.22), 0 0 30px rgba(255,255,255,.4), 0 0 60px rgba(255,255,255,.18);}
-.cta-ghost{background:transparent; color:#fff; box-shadow:0 0 0 1px rgba(255,255,255,.28); margin-left:14px;}
+.cta-ghost{background:transparent; color:#fff; box-shadow:0 0 0 1px rgba(255,255,255,.28);}
 .cta-ghost:hover{box-shadow:0 0 0 1px rgba(255,255,255,.5);}
 
 .stats{
@@ -734,6 +752,11 @@ footer .wrap {
         flex-direction: column;
         gap: 10px;
     }
+
+    .footer-brand .logo-btn.small {
+        width: 100px;
+        height: 100px;
+    }
 }
 /* ---------------------------------------------------------------------- */
 /* Footer logo                                                            */
@@ -827,14 +850,585 @@ footer .wrap {
 
 #siteHeader {
     transition:
-        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
-        opacity 0.35s ease;
+        transform 0.45s cubic-bezier(.22, 1, .36, 1),
+        opacity 0.3s ease;
 
     will-change: transform, opacity;
 }
 
 #siteHeader.header-hidden {
-    transform: translateY(-120%);
+    transform: translate3d(0, -120%, 0);
     opacity: 0;
     pointer-events: none;
+}
+
+
+/* ---------------------------------------------------------------------- */
+/* Mobile: skip the background video (data/perf), keep the dark scrim     */
+/* ---------------------------------------------------------------------- */
+@media (max-width: 720px) {
+  .bg-video { display: none; }
+  .bg-scrim { background: linear-gradient(180deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.35) 40%, rgba(0,0,0,.65) 100%); }
+}
+/* =========================================================
+   PHASE 2 — MOBILE FOUNDATION
+========================================================= */
+
+@media (max-width: 720px) {
+
+    /* ---------- GLOBAL MOBILE ---------- */
+
+    html {
+        overflow-x: hidden;
+    }
+
+    body {
+        width: 100%;
+        min-width: 0;
+        overflow-x: hidden;
+    }
+
+    .wrap {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+
+    /* ---------- HEADER ---------- */
+
+    #siteHeader {
+        padding: 12px 14px;
+    }
+
+    .head-row {
+        width: 100%;
+        max-width: none;
+        gap: 10px;
+    }
+
+    #siteHeader .logo-btn {
+        width: 68px;
+        height: 68px;
+    }
+
+    .burger {
+        width: 46px;
+        height: 46px;
+    }
+
+
+    /* ---------- MOBILE MENU ---------- */
+
+    .mobile-menu {
+        width: min(320px, calc(100vw - 32px));
+        top: 76px;
+        border-radius: 24px;
+        padding: 18px 14px 16px;
+    }
+
+
+    /* ---------- HERO ---------- */
+
+    .hero-view {
+        min-height: 100svh;
+        height: 100svh;
+    }
+
+    .page {
+        padding:
+            12px
+            18px
+            22px;
+    }
+
+    .hero-spacer {
+        height: 72px;
+    }
+
+    .hero {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 4px;
+    }
+
+
+    /* ---------- TRUST BADGE ---------- */
+
+    .trust-row {
+        --trust-size: 34px;
+        max-width: 100%;
+        margin-bottom: 18px;
+    }
+
+    .trust-pill {
+        max-width: calc(100vw - 110px);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 14px;
+        font-size: 12px;
+    }
+
+
+    /* ---------- HERO HEADLINE ---------- */
+
+    .headline {
+        width: 100%;
+        font-size: clamp(31px, 9.5vw, 48px);
+        line-height: 1.02;
+        letter-spacing: -0.07em;
+    }
+
+    .hl-line {
+        white-space: normal;
+        overflow: visible;
+    }
+
+
+    /* ---------- HERO DESCRIPTION ---------- */
+
+    .subhead {
+        width: 100%;
+        max-width: 360px;
+        margin-top: 16px;
+        font-size: 15px;
+        line-height: 1.55;
+    }
+
+
+    /* ---------- HERO CTA ---------- */
+
+    .hero .cta {
+        width: auto;
+        max-width: 100%;
+        min-height: 48px;
+        padding: 12px 22px;
+        margin-top: 20px;
+    }
+
+
+    /* ---------- STATS ---------- */
+
+    .stats {
+        width: 100%;
+        max-width: 380px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        column-gap: 12px;
+        row-gap: 18px;
+        margin-top: 10px;
+    }
+
+    .stat {
+        min-width: 0;
+    }
+
+    .stat-label {
+        max-width: 140px;
+        line-height: 1.35;
+    }
+
+
+    /* ---------- SCROLL CUE ---------- */
+
+    .scroll-cue {
+        bottom: 10px;
+    }
+
+
+    /* ---------- SECTIONS ---------- */
+
+    .section {
+        padding: 72px 0;
+    }
+
+    .section.tight {
+        padding: 48px 0;
+    }
+
+
+    /* ---------- SECTION HEADINGS ---------- */
+
+    .head {
+        width: 100%;
+    }
+
+    .head h2 {
+        font-size: clamp(30px, 8.5vw, 42px);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+    }
+
+    .head .lead {
+        font-size: 15px;
+        line-height: 1.65;
+    }
+
+
+    /* ---------- BUTTONS ---------- */
+
+    .ctas {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .ctas .cta,
+    .ctas .cta-ghost {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    #siteHeader {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+    #siteHeader .logo-btn {
+        width: 62px;
+        height: 62px;
+    }
+
+    .burger {
+        width: 44px;
+        height: 44px;
+    }
+
+    .hero-spacer {
+        height: 66px;
+    }
+
+    .headline {
+        font-size: clamp(29px, 9.8vw, 40px);
+    }
+
+    .subhead {
+        font-size: 14.5px;
+    }
+
+    .stats {
+        row-gap: 14px;
+    }
+
+    .stat-label {
+        font-size: 10.5px;
+    }
+}
+/* =========================================================
+   PHASE 2 — SCROLL INDICATOR CENTER FIX
+========================================================= */
+
+.scroll-cue.reveal {
+    left: 50%;
+    transform: translateX(-50%) translateY(28px);
+}
+
+.scroll-cue.reveal.in {
+    left: 50%;
+    transform: translateX(-50%) translateY(0);
+}
+/* =========================================================
+   PHASE 2 — MOBILE GROWTH SEQUENCE
+========================================================= */
+
+@media (max-width: 720px) {
+
+    .flow-diagram {
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 0;
+        margin-top: 28px;
+    }
+
+    .flow-step {
+        width: auto;
+        min-width: 180px;
+        justify-content: center;
+        padding: 11px 20px;
+    }
+
+    .flow-arrow {
+        width: 1px;
+        height: 28px;
+        margin: 0;
+        background: var(--line);
+    }
+
+    .flow-arrow::after {
+        right: auto;
+        top: auto;
+        left: 50%;
+        bottom: -1px;
+
+        width: 6px;
+        height: 6px;
+
+        border-top: 0;
+        border-right: 1px solid var(--muted-2);
+        border-bottom: 1px solid var(--muted-2);
+
+        transform: translateX(-50%) rotate(45deg);
+    }
+}
+/* =========================================================
+   PHASE 2 — MOBILE FOOTER
+   Desktop footer remains unchanged
+========================================================= */
+
+@media (max-width: 720px) {
+
+    /* ---------- FOOTER CONTAINER ---------- */
+
+    footer {
+        padding: 56px 0 24px;
+    }
+
+    footer .wrap {
+        width: calc(100% - 36px);
+        max-width: none;
+        margin: 0 auto;
+    }
+
+
+    /* ---------- FOOTER TOP ---------- */
+
+    .footer-top {
+        display: flex;
+        flex-direction: column;
+        gap: 36px;
+        padding-bottom: 36px;
+    }
+
+
+    /* ---------- BRAND ---------- */
+
+    .footer-brand {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .footer-brand .logo-btn.small {
+        width: 110px;
+        height: 110px;
+    }
+
+    .footer-brand .logo-btn.small img {
+        width: 110px;
+        height: 110px;
+    }
+
+    .footer-brand p {
+        max-width: 340px;
+        margin-top: 12px;
+        font-size: 14px;
+        line-height: 1.65;
+    }
+
+
+    /* ---------- NAVIGATION + CONTACT ---------- */
+
+    .footer-nav {
+        width: 100%;
+        display: grid;
+        grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.5fr);
+        gap: 24px;
+    }
+
+    .footer-col {
+        min-width: 0;
+    }
+
+    .footer-col h5 {
+        margin-bottom: 16px;
+        font-size: 12px;
+    }
+
+    .footer-col li {
+        margin-bottom: 11px;
+    }
+
+    .footer-col a {
+        display: inline-block;
+        max-width: 100%;
+        font-size: 13.5px;
+        line-height: 1.5;
+        overflow-wrap: anywhere;
+    }
+
+
+    /* ---------- FOOTER BOTTOM ---------- */
+
+    .footer-bottom {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 8px;
+        padding-top: 20px;
+    }
+
+    .footer-bottom p {
+        font-size: 11.5px;
+        line-height: 1.5;
+    }
+}
+
+
+/* ---------- SMALL PHONES ---------- */
+
+@media (max-width: 380px) {
+
+    footer {
+        padding-top: 48px;
+    }
+
+    footer .wrap {
+        width: calc(100% - 28px);
+    }
+
+    .footer-top {
+        gap: 30px;
+        padding-bottom: 30px;
+    }
+
+    .footer-brand .logo-btn.small {
+        width: 95px;
+        height: 95px;
+    }
+
+    .footer-brand .logo-btn.small img {
+        width: 95px;
+        height: 95px;
+    }
+
+    .footer-brand p {
+        font-size: 13px;
+    }
+
+    .footer-nav {
+        grid-template-columns: minmax(0, 0.75fr) minmax(0, 1.5fr);
+        gap: 18px;
+    }
+
+    .footer-col a {
+        font-size: 12.5px;
+    }
+}
+/* =========================================
+   MOBILE - BIG IDEA SECTION SPACING FIX
+   Desktop remains unchanged
+========================================= */
+
+@media (max-width: 720px) {
+
+    /* Reduce space below the 7-step sequence */
+    #idea {
+        padding-bottom: 30px;
+    }
+
+    /* Reduce space before "WHAT WE DO" */
+    #what-we-do {
+        padding-top: 30px;
+    }
+
+}
+.case-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+/* =========================================
+   OUR WORK — FINAL LAYOUT
+========================================= */
+
+#work .work-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 20px !important;
+    width: 100%;
+}
+
+#work .work-card {
+    width: 100%;
+    min-width: 0;
+    display: block;
+    background: #000;
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+/* WEBSITE SCREENSHOT */
+#work .work-card > img {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    object-position: top center;
+}
+
+/* CARD CONTENT */
+#work .work-card .case-body {
+    padding: 18px;
+}
+
+#work .work-card .case-body h4 {
+    margin: 6px 0 10px;
+}
+
+#work .work-card .case-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* THIRD CARD */
+#work .work-cta {
+    display: flex;
+    flex-direction: column;
+}
+
+#work .work-cta-image {
+    width: 100%;
+    height: 190px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #111;
+    color: #777;
+
+    font-size: 12px;
+    letter-spacing: .04em;
+}
+
+/* TABLET */
+@media (max-width: 900px) {
+
+    #work .work-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+}
+
+/* MOBILE */
+@media (max-width: 650px) {
+
+    #work .work-grid {
+        grid-template-columns: 1fr !important;
+    }
+
 }
