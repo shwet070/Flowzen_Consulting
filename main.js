@@ -122,3 +122,37 @@ backToForm.addEventListener("click", function () {
     thankYouMessage.hidden = true;
     growthForm.style.display = "";
 });
+/* =========================================
+   HEADER HIDE ON SCROLL DOWN / SHOW ON UP
+========================================= */
+
+const siteHeader = document.getElementById("siteHeader");
+
+let lastScrollY = window.scrollY;
+
+window.addEventListener("scroll", () => {
+
+    if (!siteHeader) return;
+
+    const currentScrollY = window.scrollY;
+
+    // Always show header at the very top
+    if (currentScrollY <= 20) {
+        siteHeader.classList.remove("header-hidden");
+        lastScrollY = currentScrollY;
+        return;
+    }
+
+    // Scrolling DOWN → hide entire header
+    if (currentScrollY > lastScrollY) {
+        siteHeader.classList.add("header-hidden");
+    }
+
+    // Scrolling UP → show entire header
+    else if (currentScrollY < lastScrollY) {
+        siteHeader.classList.remove("header-hidden");
+    }
+
+    lastScrollY = currentScrollY;
+});
+

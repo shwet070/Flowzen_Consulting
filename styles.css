@@ -188,8 +188,10 @@ ul{list-style:none;}
 .mobile-menu[hidden]{
   display:none !important;
 }
+body.menu-open{
+  overflow:hidden;
+}
 .menu-overlay{
-    display:none !important;
     position:fixed;
     inset:0;
     z-index:25;
@@ -312,8 +314,8 @@ ul{list-style:none;}
 /* ---------------------------------------------------------------------- */
 /* Below-the-fold sections — shared                                       */
 /* ---------------------------------------------------------------------- */
-main{position:relative; z-index:1; background:var(transparent);}
-.section{padding:clamp(72px,10vw,120px) 0;background:(transparent);}
+main{position:relative; z-index:1; background:transparent;}
+.section{padding:clamp(72px,10vw,120px) 0; background:transparent;}
 .section.alt{background:rgba(140, 140, 183, 0);}
 .section.tight{padding:56px 0;}
 
@@ -818,4 +820,21 @@ footer .wrap {
         opacity: 1;
         transform: translateY(0);
     }
+}
+/* =========================================
+   HEADER HIDE / SHOW ON SCROLL
+========================================= */
+
+#siteHeader {
+    transition:
+        transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+        opacity 0.35s ease;
+
+    will-change: transform, opacity;
+}
+
+#siteHeader.header-hidden {
+    transform: translateY(-120%);
+    opacity: 0;
+    pointer-events: none;
 }
