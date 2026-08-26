@@ -123,62 +123,48 @@ backToForm.addEventListener("click", function () {
     growthForm.style.display = "";
 });
 /* =========================================
-   HEADER HIDE ON SCROLL DOWN / SHOW ON UP
+   HEADER HIDE / SHOW ON SCROLL
 ========================================= */
 
 const siteHeader = document.getElementById("siteHeader");
 
 let lastScrollY = window.scrollY;
-let scrollTicking = false;
+let ticking = false;
 
-const SCROLL_THRESHOLD = 8;
-const TOP_OFFSET = 20;
+function updateHeader() {
 
-function updateHeaderOnScroll() {
     if (!siteHeader) return;
 
-    // Keep header visible while mobile menu is open
-    if (document.body.classList.contains("menu-open")) {
-        siteHeader.classList.remove("header-hidden");
-        scrollTicking = false;
-        return;
-    }
-
     const currentScrollY = window.scrollY;
-    const scrollDifference = currentScrollY - lastScrollY;
 
-    // Always show header near the top
-    if (currentScrollY <= TOP_OFFSET) {
+    // Always visible at the top
+    if (currentScrollY <= 20) {
         siteHeader.classList.remove("header-hidden");
         lastScrollY = currentScrollY;
-        scrollTicking = false;
+        ticking = false;
         return;
     }
 
-    // Ignore tiny movements
-    if (Math.abs(scrollDifference) < SCROLL_THRESHOLD) {
-        scrollTicking = false;
-        return;
-    }
-
-    // Scrolling DOWN → hide
-    if (scrollDifference > 0) {
+    // Scrolling down
+    if (currentScrollY > lastScrollY + 4) {
         siteHeader.classList.add("header-hidden");
     }
 
-    // Scrolling UP → show
-    else {
+    // Scrolling up
+    else if (currentScrollY < lastScrollY - 4) {
         siteHeader.classList.remove("header-hidden");
     }
 
     lastScrollY = currentScrollY;
-    scrollTicking = false;
+    ticking = false;
 }
 
 window.addEventListener("scroll", () => {
-    if (!scrollTicking) {
-        window.requestAnimationFrame(updateHeaderOnScroll);
-        scrollTicking = true;
+
+    if (!ticking) {
+        window.requestAnimationFrame(updateHeader);
+        ticking = true;
     }
+
 }, { passive: true });
 

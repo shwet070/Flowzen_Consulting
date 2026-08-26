@@ -322,10 +322,49 @@ body.menu-open{
 .stat-label{color:var(--muted); font-size:clamp(11px,1.2vw,12.5px);}
 
 .scroll-cue{
-  position:absolute; left:50%; bottom:14px; transform:translateX(-50%); z-index:1;
-  display:flex; flex-direction:column; align-items:center; gap:4px; color:var(--muted);
-  font-size:11px; letter-spacing:.08em; text-transform:uppercase; animation-delay:1s;
+  position:absolute;
+  left:50%;
+  bottom:18px;
+  z-index:2;
+
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+
+  color:var(--muted);
+  font-size:11px;
+  line-height:1;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+
+  width:max-content;
+
+  transform:translateX(-50%);
 }
+
+.scroll-cue i{
+  font-size:11px;
+  animation:bob 1.8s ease-in-out infinite;
+}
+
+@keyframes bob{
+  0%,100%{transform:translateY(0);}
+  50%{transform:translateY(5px);}
+}
+
+@media (max-width: 720px) {
+
+    .scroll-cue {
+        left: 50%;
+        bottom: 12px;
+        width: max-content;
+        transform: translateX(-50%) !important;
+        text-align: center;
+    }
+}
+
 .scroll-cue i{font-size:11px; animation:bob 1.8s ease-in-out infinite;}
 @keyframes bob{0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}}
 
@@ -1443,4 +1482,45 @@ footer .wrap {
         grid-template-columns: 1fr !important;
     }
 
+}
+/* Keep scroll cue centered after reveal animation */
+.scroll-cue.reveal.in {
+    transform: translateX(-50%);
+}
+/* =========================================
+   MOBILE HEADER FIX
+========================================= */
+
+@media (max-width: 720px) {
+
+    #siteHeader {
+        padding: 14px 16px;
+        transform: translateY(0);
+        opacity: 1;
+        transition:
+            transform 0.4s cubic-bezier(.22,1,.36,1),
+            opacity 0.3s ease;
+    }
+
+    #siteHeader.header-hidden {
+        transform: translateY(-110%);
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .head-row {
+        width: 100%;
+        max-width: none;
+        justify-content: space-between;
+    }
+
+    #siteHeader .logo-btn {
+        width: 52px;
+        height: 52px;
+    }
+
+    .burger {
+        width: 48px;
+        height: 48px;
+    }
 }
